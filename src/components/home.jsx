@@ -14,7 +14,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 const { API_KEY } = process.env
-const API_URL = 'http://localhost:3001/products'
+const API_URL = 'http://13.58.92.162:3000/products'
 
 
 function searchingfor(term) {

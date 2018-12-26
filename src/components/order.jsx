@@ -51,7 +51,8 @@ class Order extends Component {
             }, 
             rating: 3,
             userdata: JSON.parse(localStorage.getItem("user")),
-            combine1: {},
+            combine3:{},
+            combine1: [],
             orders:{},
             indexOf:0,
             Productdata1:[],
@@ -60,10 +61,11 @@ class Order extends Component {
         this.state.combine = JSON.parse(localStorage.getItem("manoj"));
         this.state.listData2=JSON.parse(localStorage.getItem("selected"));
         this.state.provider1=JSON.parse(localStorage.getItem("provider"));
-        if(this.state.provider1!=null){
+        console.log(this.state.provider1)
+        if(this.state.provider1 != null ){
             this.state.provider=this.state.provider1;
         }
-    
+        console.log(this.state.provider)
         this.state.Productdata1 = JSON.parse(localStorage.getItem("final"));
         if(this.state.Productdata1 != null) {
             this.state.Productdata = this.state.Productdata1;
@@ -72,9 +74,11 @@ class Order extends Component {
         }
         console.log(this.state.Productdata);
           console.log(this.state.combine);
+          if(this.state.combine != null){
          this.state.combine2[0]=this.state.combine[this.state.combine.length-1];
+          }
          console.log(this.state.combine2)
-          console.log(this.state.combine2[0].cust_id);
+         // console.log(this.state.combine2[0].cust_id);
           console.log(this.state.orders)
        // console.log(this.state.listData);
       //    console.log(this.state.combine[0].prodId)
@@ -89,7 +93,7 @@ class Order extends Component {
       componentDidMount(){
           window.scrollTo(0,0)
           console.log(this.state.listData2);
-          
+          if(this.state.listData2 != null ){
           for(var i=0;i<this.state.listData2.length;i++){
             var k=this.state.listData2[i].prodId.indexOf(this.state.combine2[0].prodId);
              if(this.state.combine2[0].prodId==this.state.listData2[i].prodId[k]){
@@ -98,6 +102,7 @@ class Order extends Component {
           }
         this.setState({listData:this.state.listData});
         console.log(this.state.listData)
+        }
     }
     // async get() {
     //     if (this.state.combine != undefined) {
@@ -151,7 +156,7 @@ class Order extends Component {
                     if (this.state.listData[i].available[this.index] != 0) {
                         this.state.combine2[0].quantity = this.state.combine2[0].quantity + 1;
                         this.state.combine2[0].total = this.state.combine2[0].quantity * this.state.listData[i].price[this.index];
-                        this.state.combine1.available[this.index] = this.state.combine1.available[this.index] - 1;
+                        this.state.combine3.available[this.index] = this.state.combine3.available[this.index] - 1;
                         this.setState(this.state.combine2);
                         console.log(this.state.combine2[0].quantity);
                         
@@ -177,8 +182,8 @@ class Order extends Component {
                     console.log("hiii");
                     this.state.combine2[0].quantity=this.state.combine2[0].quantity-1;
                     this.state.combine2[0].total=this.state.combine2[0].quantity*this.state.listData[i].price[this.index];
-                    this.state.combine1.available[this.index]=this.state.combine1.available[this.index]+1;
-                    console.log( this.state.combine1.available[this.index]);
+                    this.state.combine3.available[this.index]=this.state.combine3.available[this.index]+1;
+                    console.log( this.state.combine3.available[this.index]);
                     this.setState(this.state.combine2);
                     console.log(this.state.combine2);
                     }
@@ -204,13 +209,13 @@ class Order extends Component {
         // console.log(this.state.moreByProvider);
         this.state.selected_provider=a;
 
-        this.state.combine1 = Object.assign(this.state.combine1, a);
-        this.state.combine1=Object.assign(this.state.combine1,{index:this.index})
-        this.setState({ combine1: this.state.combine1 });
+        this.state.combine3 = Object.assign(this.state.combine3, a);
+        this.state.combine=Object.assign(this.state.combine3,{index:this.index})
+        this.setState({ combine3: this.state.combine3 });
         console.log(this.provider_id)
-        console.log(this.state.combine1)
+        console.log(this.state.combine3)
         this.setState({product_id:a.product_id});
-      
+        this.state.combine1.push(this.state.combine3);
         // console.log(((this.state.orders.quantity) && (this.state.orders.product_id === this.state.product_id) && (this.state.orders.provider_id === this.state.provider_id)));
         console.log(a);
         
@@ -250,12 +255,14 @@ class Order extends Component {
     }
   
     buy() {
-         this.state.provider.push(this.state.combine1);
+        console.log(typeof(this.state.provider))
+         this.state.provider.push(this.state.combine3);
+         console.log(this.state.provider[1])
         localStorage.setItem("provider", JSON.stringify(this.state.provider));
         var i=this.state.i;
             console.log(this.state.combine2[0])
         
-          var product1 = Object.assign(this.state.orders, {cust_id:this.state.userdata.uid,name:this.state.combine2[0].name,img:this.state.combine2[0].img,product_category:this.state.combine2[0].prodCategory,shop_category:this.state.combine2[0].shopCategory,rating:this.state.combine2[0].rating,size:this.state.combine2[0].size,price:this.state.combine1.price[this.state.combine1.index],quantity:this.state.combine2[0].quantity,brand_name:this.state.combine2[0].BrandName,discount:this.state.combine2[0].discount,tax:this.state.combine2[0].tax,shop_name:this.state.combine1.provider_name,prodId:this.state.combine2[0].prodId,review:this.state.combine2[0].review,total:this.state.combine2[0].total}   );
+          var product1 = Object.assign(this.state.orders, {cust_id:this.state.userdata.uid,name:this.state.combine2[0].name,img:this.state.combine2[0].img,product_category:this.state.combine2[0].prodCategory,shop_category:this.state.combine2[0].shopCategory,rating:this.state.combine2[0].rating,size:this.state.combine2[0].size,price:this.state.combine3.price[this.state.combine3.index],quantity:this.state.combine2[0].quantity,brand_name:this.state.combine2[0].BrandName,discount:this.state.combine2[0].discount,tax:this.state.combine2[0].tax,shop_name:this.state.combine1.provider_name,prodId:this.state.combine2[0].prodId,review:this.state.combine2[0].review,total:this.state.combine2[0].total}   );
 
         console.log(this.state.orders)
                 // this.state.orders.cust_id = this.state.userdata.uid,
