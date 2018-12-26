@@ -10,6 +10,7 @@ import Login from './components/login';
 import Men from './components/men';
 import Women  from './components/women';
 import Payment from './components/payment';
+import Tracking from './components/tracking';
  const Routes =() => (
      <BrowserRouter basename={'/product'}>
         <Switch>
@@ -23,6 +24,7 @@ import Payment from './components/payment';
             <Route path='/men' component={Men}/>
             <Route path='/women' component={Women}/>
             <Route path='/payment' component={Payment}/>
+            <Route path='/track' component={Tracking} />
 
         </Switch>
     </BrowserRouter>

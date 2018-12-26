@@ -10,37 +10,89 @@ class Order extends Component {
             listData1: [],
             listData2:[],
             combine: [],
+            combine2:[],
+            provider:[],
             count: 0,
             selected_provider:[],
             product_quantity:0,
             quantitySeleceted: 0,
-            userData: [], 
+            Productdata:[],
+            Userdata:{
+                     "BrandName": [],
+                    "Id1": [],
+                    "available": [],
+                    "createdAt": [],
+                    "cust_id": [],
+                    "customer_email": [],
+                    "customer_mobile_number": [],
+                    "delivery_address": [],
+                    "discount": [],
+                    "img": [],
+                    "longDesc": [],
+                    "name": [],
+                    "order_status": [],
+                    "payment_option": [],
+                    "price": [],
+                    "prodCategory": [],
+                    "prodId": [],
+                    "provider_id":[],
+                    "provider_mobile_number": [],
+                    "quantity": [],
+                    "rating": [],
+                    "review": [],
+                    "shopCategory": [],
+                    "shopName": [],
+                    "shortDesc": [],
+                    "size": [],
+                    "sku": [],
+                    "tax": [],
+                    "total": [],
+                    "updatedAt": []
+            }, 
             rating: 3,
             userdata: JSON.parse(localStorage.getItem("user")),
             combine1: {},
             orders:{},
             indexOf:0,
+            Productdata1:[],
+            provider1:[],
         }
         this.state.combine = JSON.parse(localStorage.getItem("manoj"));
         this.state.listData2=JSON.parse(localStorage.getItem("selected"));
-        console.log(this.state.listData2);
-          console.log(this.state.combine)
-          console.log(this.state.combine[0].cust_id);
+        this.state.provider1=JSON.parse(localStorage.getItem("provider"));
+        if(this.state.provider1!=null){
+            this.state.provider=this.state.provider1;
+        }
+    
+        this.state.Productdata1 = JSON.parse(localStorage.getItem("final"));
+        if(this.state.Productdata1 != null) {
+            this.state.Productdata = this.state.Productdata1;
+        } else {
+            this.state.Productdata=[];
+        }
+        console.log(this.state.Productdata);
+          console.log(this.state.combine);
+         this.state.combine2[0]=this.state.combine[this.state.combine.length-1];
+         console.log(this.state.combine2)
+          console.log(this.state.combine2[0].cust_id);
+          console.log(this.state.orders)
        // console.log(this.state.listData);
       //    console.log(this.state.combine[0].prodId)
          this.add=this.add.bind(this);
          this.del=this.del.bind(this);
+         this.buy=this.buy.bind(this);
          var index=null;
          var provider_id=null;
           // this.state.indexof=this.state.listData[0].prodId.indexOf(this.state.combine[0].prodId);
           // console.log(this.state.indexof)
       }
       componentDidMount(){
+          window.scrollTo(0,0)
           console.log(this.state.listData2);
           
           for(var i=0;i<this.state.listData2.length;i++){
-            var k=this.state.listData2[i].prodId.indexOf(this.state.combine[0].prodId);
-             if(this.state.combine[0].prodId==this.state.listData2[i].prodId[k]){
+            var k=this.state.listData2[i].prodId.indexOf(this.state.combine2[0].prodId);
+             if(this.state.combine2[0].prodId==this.state.listData2[i].prodId[k]){
                 this.state.listData.push(this.state.listData2[i]); 
              } 
           }
@@ -91,17 +143,17 @@ class Order extends Component {
     //     this.join();
     // }
     add(pid) {
-        console.log(this.state.combine[0].quantity);
+        console.log(this.state.combine2[0].quantity);
         if (this.provider_id != undefined) {
             for (var i = 0; i < this.state.listData.length; i++) {
 
                 if (this.provider_id === this.state.listData[i].provider_id) {
                     if (this.state.listData[i].available[this.index] != 0) {
-                        this.state.combine[0].quantity = this.state.combine[0].quantity + 1;
-                        this.state.combine[0].total = this.state.combine[0].quantity * this.state.listData[i].price[this.index];
+                        this.state.combine2[0].quantity = this.state.combine2[0].quantity + 1;
+                        this.state.combine2[0].total = this.state.combine2[0].quantity * this.state.listData[i].price[this.index];
                         this.state.combine1.available[this.index] = this.state.combine1.available[this.index] - 1;
-                        this.setState(this.state.combine);
-                        console.log(this.state.combine[0].quantity);
+                        this.setState(this.state.combine2);
+                        console.log(this.state.combine2[0].quantity);
                         
                     }
                     else {
@@ -121,14 +173,14 @@ class Order extends Component {
                 
                 if(this.provider_id===this.state.listData[i].provider_id){
     
-                if(this.state.combine[0].quantity>0){
+                if(this.state.combine2[0].quantity>0){
                     console.log("hiii");
-                    this.state.combine[0].quantity=this.state.combine[0].quantity-1;
-                    this.state.combine[0].total=this.state.combine[0].quantity*this.state.listData[i].price[this.index];
+                    this.state.combine2[0].quantity=this.state.combine2[0].quantity-1;
+                    this.state.combine2[0].total=this.state.combine2[0].quantity*this.state.listData[i].price[this.index];
                     this.state.combine1.available[this.index]=this.state.combine1.available[this.index]+1;
                     console.log( this.state.combine1.available[this.index]);
-                    this.setState(this.state.combine);
-                    console.log(this.state.combine);
+                    this.setState(this.state.combine2);
+                    console.log(this.state.combine2);
                     }
                     else{
                         alert("select a  valid quantity")
@@ -145,16 +197,18 @@ class Order extends Component {
          console.log(a.provider_id);
         this.provider_id = a.provider_id;
        // this.index = a.indexOf;
-        this.index=a.prodId.indexOf(this.state.combine[0].prodId);
+        this.index=a.prodId.indexOf(this.state.combine2[0].prodId);
         console.log(this.index);
         
         // this.moreByProvider();
         // console.log(this.state.moreByProvider);
         this.state.selected_provider=a;
 
-        this.state.combine1 = Object.assign({}, a);
+        this.state.combine1 = Object.assign(this.state.combine1, a);
+        this.state.combine1=Object.assign(this.state.combine1,{index:this.index})
         this.setState({ combine1: this.state.combine1 });
         console.log(this.provider_id)
+        console.log(this.state.combine1)
         this.setState({product_id:a.product_id});
       
         // console.log(((this.state.orders.quantity) && (this.state.orders.product_id === this.state.product_id) && (this.state.orders.provider_id === this.state.provider_id)));
@@ -196,41 +250,50 @@ class Order extends Component {
     }
   
     buy() {
-        localStorage.setItem("provider", JSON.stringify(this.state.combine1));
+         this.state.provider.push(this.state.combine1);
+        localStorage.setItem("provider", JSON.stringify(this.state.provider));
         var i=this.state.i;
-        if((parseInt(this.state.orders.cust_id)) === (parseInt(this.state.cust_id))){
-            console.log(this.state.orders);
-        } if(!((parseInt(this.state.orders.cust_id)) === (parseInt(this.state.cust_id)))){    
-                this.state.orders.cust_id = this.state.userdata.uid,
-                this.state.orders.product_name = this.state.combine[0].name,
-                this.state.orders.product_image = this.state.combine[0].img,
-                this.state.orders.product_category = this.state.combine[0].prodCategory,
-                this.state.orders.shop_category = this.state.combine[0].shopCategory,
-                this.state.orders.rating = this.state.combine[0].rating,
-                this.state.orders.size = this.state.combine[0].size,
-                this.state.orders.price = this.state.combine[0].price,
-                this.state.orders.quantity = this.state.combine[0].quantity,
-                this.state.orders.brand_name = this.state.combine[0].BrandName,
-                this.state.orders.discount = this.state.combine[0].discount,
-                this.state.orders.tax = this.state.combine[0].tax,
-                this.state.orders.shop_name = this.state.combine[0].shopname,
-                this.state.orders.product_id = this.state.combine[0].prodId,
-                this.state.orders.review = this.state.combine[0].review,
-                this.state.orders.total = this.state.combine[0].total,
-                this.state.orders.order_status = this.state.combine1.provider_mobile_number,
-                this.state.orders.provider_mobile_number = this.state.userdata.phno,
-                this.state.orders.customer_mobile_number = this.state.userdata.phno,
-                this.state.orders.delivery_address = this.state.userdata.address,
-                this.state.orders.provider_id = this.provider_id,
-                this.state.orders.payment_option = "online",
-                this.state.orders.customer_email = this.state.userdata.email,
-                this.state.userData.push(this.state.orders);;   
+            console.log(this.state.combine2[0])
+        
+          var product1 = Object.assign(this.state.orders, {cust_id:this.state.userdata.uid,name:this.state.combine2[0].name,img:this.state.combine2[0].img,product_category:this.state.combine2[0].prodCategory,shop_category:this.state.combine2[0].shopCategory,rating:this.state.combine2[0].rating,size:this.state.combine2[0].size,price:this.state.combine1.price[this.state.combine1.index],quantity:this.state.combine2[0].quantity,brand_name:this.state.combine2[0].BrandName,discount:this.state.combine2[0].discount,tax:this.state.combine2[0].tax,shop_name:this.state.combine1.provider_name,prodId:this.state.combine2[0].prodId,review:this.state.combine2[0].review,total:this.state.combine2[0].total}   );
+
+        console.log(this.state.orders)
+                // this.state.orders.cust_id = this.state.userdata.uid,
+                // this.state.orders.product_name = this.state.combine2[0].name,
+                // this.state.orders.product_image = this.state.combine2[0].img,
+                // this.state.orders.product_category = this.state.combine2[0].prodCategory,
+                // this.state.orders.shop_category = this.state.combine2[0].shopCategory,
+                // this.state.orders.rating = this.state.combine2[0].rating,
+                // this.state.orders.size = this.state.combine2[0].size,
+                // this.state.orders.price = this.state.combine2[0].price,
+                // this.state.orders.quantity = this.state.combine2[0].quantity,
+                // this.state.orders.brand_name = this.state.combine2[0].BrandName,
+                // this.state.orders.discount = this.state.combine2[0].discount,
+                // this.state.orders.tax = this.state.combine2[0].tax,
+                // this.state.orders.shop_name = this.state.combine2[0].shopname,
+                // this.state.orders.product_id = this.state.combine2[0].prodId,
+                // this.state.orders.review = this.state.combine2[0].review,
+                // this.state.orders.total = this.state.combine2[0].total,
+                var product = Object.assign(this.state.orders,  {order_status:"placed"} );
+                // var product = Object.assign(this.state.orders,   this.state.combine2[0] );
+                // this.state.orders.provider_mobile_number = this.state.combine1.provider_mobile_number,
+                // this.state.orders.customer_mobile_number = this.state.userdata.phno,
+                // this.state.orders.delivery_address = this.state.userdata.address,
+                // this.state.orders.provider_id = this.provider_id,
+                // this.state.orders.payment_option = "online",
+                // this.state.orders.customer_email = this.state.userdata.email,
+                // this.state.userData.push(this.state.orders);;   
+                var product2 = Object.assign(this.state.orders,{provider_mobile_number:this.state.combine1.provider_mobile_number,customer_mobile_number:this.state.userdata.phno,delivery_address:this.state.userdata.address,provider_id:this.provider_id,payment_option:"online",customer_email:this.state.userdata.email}    );
                 console.log(this.state.orders);
-        }
-        console.log(this.state.userData)
-        localStorage.setItem("final", JSON.stringify(this.state.userData));
+                var name= this.state.orders.BrandName;
+                console.log(this.state.Userdata)
+                //this.state.Userdata.BrandName.push(name);
+             this.state.Productdata.push(this.state.orders);
+                // var pro=Object.assign(this.state.userData,this.state.orders)
+        console.log(this.state.Productdata)
+        localStorage.setItem("final", JSON.stringify(this.state.Productdata));
         localStorage.setItem("orders",JSON.stringify(this.state.orders));
-        this.props.history.push("/");
+        this.props.history.push("/cart");
         console.log(this.state.orders);
     }
     // onStarClick(nextValue, prevValue, name) {
@@ -258,9 +321,9 @@ class Order extends Component {
         </div>
                 {/* {this.state.listData2.length!=null?( */}
                 <div>
-            {this.state.combine == undefined ? (alert("pls signin first")) : (
+            {this.state.combine2 == undefined ? (alert("pls signin first")) : (
                     <div class="container">
-                        {this.state.combine.map((a) =>
+                        {this.state.combine2.map((a) =>
                             <div class="card">
                                 <div class="container-fliud">
                                     <div class=" row">
@@ -348,10 +411,10 @@ class Order extends Component {
                                     {this.state.listData.map((a, index) =>
                                         <tr>
                                             <td> <input type="radio" name="Radio" id={a.product_id} onChange={() => this.selectprovider(a, index)} /></td>
-                                            <td>₹{a.price[a.prodId.indexOf(this.state.combine[0].prodId)]}</td>
+                                            <td>₹{a.price[a.prodId.indexOf(this.state.combine2[0].prodId)]}</td>
 
                                             <td>{a.provider_name}</td>
-                                            <td>{a.available[a.prodId.indexOf(this.state.combine[0].prodId)]}</td>
+                                            <td>{a.available[a.prodId.indexOf(this.state.combine2[0].prodId)]}</td>
                                             <td>{a.provider_address}</td>
                                         </tr>
                                     )}

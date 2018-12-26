@@ -274,6 +274,7 @@ class NavBar extends Component {
                                             </li>
                                             <li className=" menu__item"><a className="menu__link" href={"/product/cart"}><i className="fa fa-shopping-cart">Cart</i></a></li>
                                             <li className=" menu__item"><a className="menu__link" href="/product/checkout">Checkout</a></li>
+                                            <li className=" menu__item"><a className="menu__link" href="/product/track">Order Tracking</a></li>
 
                                             {this.state.userdata == undefined ? (
                                                 <div >

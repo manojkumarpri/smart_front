@@ -8,25 +8,63 @@ class Cart extends Component {
     this.state = {
       combine1: [],
       combine: [],
-      listData1:{},
-      rating: 5
+      listData1:[],
+      listData:[],
+      rating: 5,
+      check:[],
+      check1:[],
     }
     // this.get=this.get.bind(this);
     this.state.combine = JSON.parse(localStorage.getItem("final"));
     console.log(this.state.combine);
     // this.setState({combine:this.state.combine})
-    this.state.listData1 = JSON.parse(localStorage.getItem("provider"));
+    this.state.check1=JSON.parse(localStorage.getItem("check"));
+    if(this.state.check1!=null){
+      this.state.check=this.state.check1;
+    }
+    else{
+      this.state.check=[];
+    }
+
+    
   }
 
   
-  Remove() {
+  Remove(id) {
     // localStorage.setItem("final");
-    localStorage.removeItem("final");
+    for(var i=0;i<this.state.combine.length;i++){
+      if(this.state.combine[i].prodId==id){
+        this.state.combine.splice(i, 1);
+      }
+    }
+    localStorage.setItem("final", JSON.stringify(this.state.combine));
+
     window.location.reload();
-    this.props.history.push("/");
+    this.props.history.push("/cart");
   }
   Reload(){
     window.location.reload();
+  }
+  checkout(a){
+    console.log(a)
+    this.state.check.push(a);
+    localStorage.setItem("check", JSON.stringify(this.state.check));
+    for(var i=0;i<this.state.combine.length;i++){
+      if(this.state.combine[i].prodId==a.prodId){
+        this.state.combine.splice(i, 1);
+      }
+    }
+    console.log(this.state.combine)
+    localStorage.setItem("final", JSON.stringify(this.state.combine));
+    window.location.reload();
+    this.props.history.push("/cart");
+
+
+   // this.props.history.push("/checkout");
+
+  }
+  checkout1(){
+    this.props.history.push("/checkout");
   }
   
   // onStarClick(nextValue, prevValue, name) {
@@ -41,7 +79,7 @@ class Cart extends Component {
     
     const { rating } = this.state;
 
-    console.log(this.state.listData1);
+    
     
     console.log((this.state.combine));
     if (this.state.combine == []) {
@@ -70,6 +108,7 @@ class Cart extends Component {
         <hr/>
         {this.state.combine!=undefined ? (this.state.combine.map(a =>
         
+        
           <table id="cart" className="card mb-2 table-responsive">
             <thead>
               <tr>
@@ -86,10 +125,10 @@ class Cart extends Component {
                 <td data-th="Product">
                   <div className="row">
                     <div className="col-sm-2  hidden-xs">
-                    <img src={a.product_image} alt="..." className="img-responsive" />
+                    <img src={a.img} alt="..." className="img-responsive" />
                     </div>
                     <div className="col-sm-10">
-                      <h4 className="nomargin">{a.product_name}</h4>
+                      <h4 className="nomargin">{a.name}</h4>
                         <StarRatingComponent
                           name="rate2"
                           editing={false}
@@ -101,36 +140,37 @@ class Cart extends Component {
                     </div>
                   </div>
                 </td>
-                <td data-th="Price"> ₹{a.price}</td>
+                <td data-th="Price"> Rs.{a.price}</td>
                 <td data-th="Quantity">
-                  <input type="number" className="form-control text-center" value={a.quantity} />
-                  {/* <p>{this.state.listData.quantity}</p> */}
+                  {/* <input type="number" className="form-control text-center" value={a.quantity} /> */}
+                  <p>{a.quantity}</p>
                 </td>
-                <td data-th="Subtotal" className="text-center"> ₹{a.price * a.quantity}</td>
+                <td data-th="Subtotal" className="text-center"> Rs.{a.price * a.quantity}</td>
                 <td className="actions" data-th="">
                   <button className="btn btn-info btn-sm" onClick={()=>this.Reload()}><i className="fa fa-refresh"></i></button>&nbsp;
-                  <button className="btn btn-danger btn-sm" onClick={() => this.Remove(a.id)}><i className="fa fa-trash"></i></button>
+                  <button className="btn btn-danger btn-sm" onClick={() => this.Remove(a.prodId)}><i className="fa fa-trash"></i></button>
                 </td>
               </tr>
             </tbody>
            
             <tfoot>
               <tr className="visible-xs">
-                <td className="text-center"><strong>Total ₹{a.price * a.quantity}</strong></td>
+                <td className="text-center"><strong>Total Rs.{a.price * a.quantity}</strong></td>
               </tr>
               <tr>
                 <td><a href="/product" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</a></td>
                 <td colSpan="2" className="hidden-xs"></td>
-                <td className="hidden-xs text-center"><strong>Total ₹{a.price * a.quantity}</strong></td>
-                <td><a href="/product/checkout" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></a></td>
+                <td className="hidden-xs text-center"><strong>Total Rs.{a.price * a.quantity}</strong></td>
+                <td><button  className="btn btn-info" onClick={()=>this.checkout(a)}>add to checkout</button></td>
               </tr>
             </tfoot>
           </table>
       ) ):(
-        alert("Cart is Empty", this.props.history.push("/"))
+        alert("Cart is Empty", this.props.history.push("/")) 
     )}
         
         </div>
+        <button className="btn btn-success" onClick={()=>this.checkout1()}>Go to checkout</button>
         {/* {this.state.combine != undefined ? (
           <div> */}
         {/* <h1>YOUR CART DETAILS BELOW:</h1>

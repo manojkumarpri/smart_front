@@ -23,6 +23,7 @@ class payment extends Component {
             userdata: JSON.parse(localStorage.getItem("user")),
             delivery_address: "",
             listData: [],
+            resource:[],
             listData2: {
                 "cust_id": 0,
                 "product_name": "",
@@ -55,7 +56,7 @@ class payment extends Component {
             rating:0,
 
             feedback:'',
-            listData1: {},
+            listData1: [],
             combine: [],
             payment: "nothing",
             total: "",
@@ -65,14 +66,14 @@ class payment extends Component {
             indexOf: 0,
             listData3 : JSON.parse(localStorage.getItem("provider")),
         }
-        this.state.listData = JSON.parse(localStorage.getItem("final"));
+        this.state.listData = JSON.parse(localStorage.getItem("check"));
         this.state.listData1 = JSON.parse(localStorage.getItem("provider")); 
         this.confirmorder= this.confirmorder.bind(this);
         this.confirmorder1=this.confirmorder1.bind(this);
         //this.modal=this.modal.bind(this);
 
         console.log(this.state.modal);
-       console.log(this.state.listData3)
+       console.log(this.state.listData)
     }
     onStarClick(nextValue, prevValue, name) {
         this.setState({ rating: nextValue });
@@ -102,51 +103,59 @@ class payment extends Component {
         console.log(this.state.modal);
         
     }
- async  confirmorder1() {
-        console.log(this.state.listData);
+ async  confirmorder1() { 
+      for(var i=0;i<this.state.listData.length;i++){
+    this.state.listData2.cust_id = this.state.listData[i].cust_id;
+    this.state.listData2.product_name = this.state.listData[i].name;
+    this.state.listData2.product_image = this.state.listData[i].img;
+    this.state.listData2.product_category = this.state.listData[i].product_category;
+    this.state.listData2.rating = this.state.listData[i].rating;
+    this.state.listData2.shop_category = this.state.listData[i].shop_category;
+    this.state.listData2.size = this.state.listData[i].size;
+    this.state.listData2.price = this.state.listData[i].price;
+    this.state.listData2.quantity = this.state.listData[i].quantity;
+    this.state.listData2.brand_name = this.state.listData[i].brand_name;
+    this.state.listData2.discount = this.state.listData[i].discount;
+    this.state.listData2.tax = this.state.listData[i].tax;
+    this.state.listData2.shop_name = this.state.listData[i].shop_name;
+    this.state.listData2.product_id = this.state.listData[i].prodId;
+    this.state.listData2.review = this.state.listData[i].review;
+    this.state.listData2.total = this.state.listData[i].total;
+    this.state.listData2.provider_mobile_number = this.state.listData[i].provider_mobile_number;
+    this.state.listData2.customer_mobile_number = this.state.listData[i].customer_mobile_number;
+    this.state.listData2.delivery_address = this.state.delivery_address;
+    this.state.listData2.provider_id = this.state.listData[i].provider_id;
+    this.state.listData2.payment_option = this.state.payment;
+    this.state.listData2.customer_email = this.state.listData[i].customer_email;
+    this.state.listData2.invoice_number = Date.now();
 
-        this.state.listData2.cust_id = this.state.listData[0].cust_id;
-        this.state.listData2.product_name = this.state.listData[0].product_name;
-        this.state.listData2.product_image = this.state.listData[0].product_image;
-        this.state.listData2.product_category = this.state.listData[0].product_category;
-        this.state.listData2.rating = this.state.rating;
-        this.state.listData2.shop_category = this.state.listData[0].shop_category;
-        this.state.listData2.size = this.state.listData[0].size;
-        this.state.listData2.price = this.state.listData[0].price;
-        this.state.listData2.quantity = this.state.listData[0].quantity;
-        this.state.listData2.brand_name = this.state.listData[0].brand_name;
-        this.state.listData2.discount = this.state.listData[0].discount;
-        this.state.listData2.tax = this.state.listData[0].tax;
-        this.state.listData2.shop_name = this.state.listData[0].shop_name;
-        this.state.listData2.product_id = this.state.listData[0].product_id;
-        this.state.listData2.review = this.state.listData[0].review;
-        this.state.listData2.total = this.state.listData[0].total;
-        this.state.listData2.provider_mobile_number = this.state.listData[0].provider_mobile_number;
-        this.state.listData2.customer_mobile_number = this.state.listData[0].customer_mobile_number;
-        this.state.listData2.delivery_address = this.state.delivery_address;
-        this.state.listData2.provider_id = this.state.listData[0].provider_id;
-        this.state.listData2.payment_option = this.state.payment;
-        this.state.listData2.customer_email = this.state.listData[0].customer_email;
-        this.state.listData2.invoice_number = Date.now();
-        this.state.listData2.feedback = this.state.feedback;
 
-        this.state.invoice_number = Date.now();
-        console.log(this.state.invoice_number);
+    this.state.invoice_number = Date.now();
+    console.log(this.state.invoice_number);
+      }
         // var product = Object.assign(this.state.combine, { payment_option: this.state.payment,invoice_number:this.state.invoice_number,delivered_on:this.state.delivered_on });
         // var product1=Object.assign(this.state.listData,this.state.combine)
         console.log(this.product1);
-        console.log(this.state.listData[0].product_id)
+        console.log(this.state.listData.product_id)
         console.log(this.state.listData1)
         console.log(this.state.listData2)
-        axios.put("http://localhost:3001/provider/" + this.state.listData1.provider_id, this.state.listData1).then(response => {
+        for(var i=0;i<this.state.listData1.length;i++){
+        axios.put("http://13.58.92.162:3000/provider/" + this.state.listData[i].provider_id, this.state.listData1[i]).then(response => {
             console.log(response);
         }).catch(error => console.log(error)
         )
-        axios.post("http://localhost:3001/orders", this.state.listData2).then(response => {
-            console.log(response);
-        }).catch(error => console.log(error)
-        )
-        axios.get('http://api.msg91.com/api/sendhttp.php?country=91&sender=MSGIND&route=4&mobiles=' + this.state.listData2.customer_mobile_number + '&authkey=243177AyunGcNGL5bc6ed47&message=' + this.state.userdata.name + ' has purchased. Total amount is ' + this.state.listData2.total, { headers: { 'crossDomain': true, } });
+    }
+        for(var i=0;i<this.state.resource.length;i++){
+            axios.post("http://13.58.92.162:3000/orders", this.state.resource[i]).then(response => {
+                console.log(response);
+            }).catch(error => console.log(error)
+            )
+        }
+          //  axios.get('http://api.msg91.com/api/sendhttp.php?country=91&sender=MSGIND&route=4&mobiles=' + this.state.listData2.customer_mobile_number + '&authkey=243177AyunGcNGL5bc6ed47&message=' + this.state.userdata.name + ' has purchased. Total amount is ' + this.state.listData2.total, { headers: { 'crossDomain': true, } });
+         alert("your Order Placed sucessfully");
+         window.location.reload();
+    this.props.history.push("/");
+
 
     }
     onToken = (token) => {

@@ -1,9 +1,8 @@
 {
-	"homepage":"https://13.58.92.162:8080/product",
+  "homepage": "https://13.58.92.162:8080/product",
   "name": "product",
   "version": "0.1.0",
   "private": true,
-
   "dependencies": {
     "axios": "^0.18.0",
     "prop-types": "^15.6.2",

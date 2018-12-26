@@ -50,7 +50,7 @@ class footer extends Component{
 							</div>
 							<div className="w3-address-right">
 								<h6>Phone Number</h6>
-								<p>NNNNNNN</p>
+								<p>9500037221</p>
 							</div>
 							<div className="clearfix"> </div>
 						</div>
@@ -60,7 +60,7 @@ class footer extends Component{
 							</div>
 							<div className="w3-address-right">
 								<h6>Email Address</h6>
-								<p>Email :<a href="mailto:example@email.com"> YYYYYYYY</a></p>
+								<p>Email :<a href="sen@shinelogics.com"> sen@shinelogics.com</a></p>
 							</div>
 							<div className="clearfix"> </div>
 						</div>
@@ -70,7 +70,7 @@ class footer extends Component{
 							</div>
 							<div className="w3-address-right">
 								<h6>Location</h6>
-								<p>ZZZZZZZZZZZZ. 
+								<p>Thiruvanmaiyur-chennai. 
 								
 								</p>
 							</div>

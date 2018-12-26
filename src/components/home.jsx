@@ -37,6 +37,7 @@ class Home extends Component {
       provider: new Set(),
       userdata: [],
       combine1: [],
+      
       combine2:  {
         Id1: Number,
         img: String,
@@ -72,7 +73,8 @@ class Home extends Component {
     var cust_id = null;
 
     this.state.userdata = JSON.parse(localStorage.getItem("user"));
-   
+    this.state.combine1 = JSON.parse(localStorage.getItem("manoj"));
+     console.log(this.state.combine1)
    
     if (this.state.userdata) {
       this.cust_id = this.state.userdata.uid;
@@ -175,11 +177,19 @@ class Home extends Component {
     if (this.state.userdata != undefined) {
       console.log("here add to cart");
       this.state.cust_id = this.state.userdata.uid;
-      console.log(this.state.cust_id)
+      console.log(this.state.cust_id);
+       console.log(pid)
       var product = Object.assign(pid, { cust_id: this.state.cust_id });
+      if(this.state.combine1!= null){
       this.state.combine1.push(pid);
       //<Cart combine1={this.props.combine1} ></Cart>
+      }
+      else{
+        this.state.combine1=[];
+        console.log(this.state.combine1)
+        this.state.combine1.push(pid);
 
+      }
       console.log(this.state.combine1)
       localStorage.setItem("manoj", JSON.stringify(this.state.combine1));
       this.props.history.push('/order');
@@ -190,8 +200,10 @@ class Home extends Component {
   }
   
   componentDidMount() {
-     this.get();
-  //this.getmyposition();
+    
+    this.get();
+    window.scrollTo(0,0)
+    //this.getmyposition();
 
   }
   async    get() {
@@ -562,7 +574,7 @@ getaddress(e){
                    
                     <div className="men-cart-pro">
                       <div className="inner-men-cart-pro">
-                        <a href="/product" className="link-product-add-cart">Quick View</a>
+                        <a href="/product" className="link-product-add-cart"></a>
                       </div>
                     </div>
 
@@ -570,7 +582,7 @@ getaddress(e){
                   <div className="item-info-product ">
                     <h4><a href={"/single"}>{item.name}</a></h4>
                     <div className="info-product-price">
-                      <span className="item_price">₹{item.price}</span>
+                      <span className="item_price"></span>
                       {/* <del>$69.71</del> */}
                     </div>
                     <div className="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
