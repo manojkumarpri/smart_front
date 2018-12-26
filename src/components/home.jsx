@@ -13,6 +13,9 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+const { API_KEY } = process.env
+const API_URL = 'http://localhost:3001/products'
+
 
 function searchingfor(term) {
   return function (x) {
@@ -20,15 +23,42 @@ function searchingfor(term) {
   }
 }
 
+function myFunction(input) {
+  var filter, ul, li, a, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myUL");
+  li = ul.getElementsByTagName("li");
+  for (i = 0; i < li.length; i++) {
+      a = li[i].getElementsByTagName("a")[0];
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          li[i].style.display = "";
+      } else {
+          li[i].style.display = "none";
+      }
+  }
+}
+
+
+
+
+
+
+
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef() // create a ref object 
+
     this.state = {
       lat1:0,
       lon1:0,
       articles: [],
       listData: [],
       listData1: [],
+      
+  
       combine: new Set(),
       data1: "",
       searchterm:"",
@@ -37,6 +67,7 @@ class Home extends Component {
       provider: new Set(),
       userdata: [],
       combine1: [],
+      show:"false",
       
       combine2:  {
         Id1: Number,
@@ -167,6 +198,8 @@ class Home extends Component {
   }
   
   searchHandler(event){
+    console.log(event)
+      this.state.show="true";
       this.setState({searchterm:event.target.value});
   }
   
@@ -296,9 +329,20 @@ class Home extends Component {
   //  this.join();
   }
 
-getaddress(e){
-        
+  scrollToMyRef = () => { // run this method to execute scrolling. 
+    window.scrollTo({
+        top:this.myRef.current.offsetTop, 
+        behavior: "smooth"  // Optional, adds animation
+    })
 }
+
+searchHandlers(a){
+  this.state.searchterm=a;
+  console.log(this.state.searchterm);
+  this.state.show="false";
+  this.scrollToMyRef();
+}
+
 
 
   render() {
@@ -311,13 +355,29 @@ getaddress(e){
           <div className="header-bot_inner_wthreeinfo_header_mid">
           <br/>
             <div className="col-md-4 header-middle">
-              <form >
-              <input type="search"  onChange={this.searchHandler} placeholder="search by productname" />
-                {/* <input type="search" name="search"  placeholder="Search here..." onChange={this.searchHandler} /> */}
+               <form > 
+              
+
+                           
+                <input type="search"  onChange={this.searchHandler} placeholder="search by productname.." value={this.state.searchterm}/>
+             {this.state.articles.filter(searchingfor(this.state.searchterm)).map(a=>
+             
+                <ul >
+             {this.state.show=="true"? (     
+  <li><a href="#" onClick={(e)=>this.searchHandlers(a.name)}>{a.name}</a></li>
+             ):([])}
+</ul>
+)}
+                {/* /* <input type="search" name="search"  placeholder="Search here..." onChange={this.searchHandler} /> */}
                 {/* <input type="submit" value="search"  onChange={()=>this.searchHandler()} style={{ height: "47px" }} /> */}
-                {/* <i class="fa fa-location-arrow" aria-hidden="true"></i> */}
-                <div className="clearfix"></div>
-              </form>
+                 {/* <i class="fa fa-location-arrow" aria-hidden="true"></i>  */}
+                 <div className="clearfix"></div>
+              </form> 
+              
+  
+
+
+              
             </div>
             
             <div className="col-md-5 logo_agile">
@@ -562,7 +622,7 @@ getaddress(e){
         <div className="resp-tabs-container" style={{ backgroundColor: "#ffffff" }}>
           <h3 className="wthree_text_info">New <span>Arrivals</span></h3>
           {/* --/tab_one-- */}
-          <div className="row">
+          <div className="row" ref={this.myRef}>
           {this.state.articles.filter(searchingfor(this.state.searchterm)).map(item => (
               <div className="col-md-3 product-men">
                 <div className="men-pro-item simpleCart_shelfItem">
